@@ -31,8 +31,14 @@ def scrape_updates(html_content):
 
 # Requisito 3
 def scrape_next_page_link(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    try:
+        soup = BeautifulSoup(html_content, "html.parser")
+        next_page = soup.select_one("a.next.page-numbers")
+        if next_page:
+            return next_page.get("href")
+        return None
+    except ValueError:
+        return None
 
 
 # Requisito 4
