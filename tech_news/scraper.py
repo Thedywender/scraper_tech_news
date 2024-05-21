@@ -13,14 +13,20 @@ def fetch(url):
             return response.text
         else:
             return None
-    except (requests.exceptions.RequestException, requests.Timeout) as e:
+    except (requests.exceptions.RequestException, requests.Timeout):
         return None
 
 
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    list_of_links = []
+    try:
+        soup = BeautifulSoup(html_content, "html.parser")
+        links = [link.get("href") for link in soup.select("h2.entry-title a")]
+        list_of_links.extend(links)
+        return list_of_links
+    except ValueError:
+        return []
 
 
 # Requisito 3
