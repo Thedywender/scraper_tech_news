@@ -43,8 +43,29 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    #     {
+    #   "url": "https://blog.betrybe.com/novidades/noticia-bacana",
+    #   "title": "Notícia bacana",
+    #   "timestamp": "04/04/2021",
+    #   "writer": "Eu",
+    #   "reading_time": 4,
+    #   "summary": "Algo muito bacana aconteceu",
+    #   "category": "Ferramentas",
+    # }
+    news_dict = dict()
+    try:
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        news_dict["url"] = soup.find("h2.entry-title").text
+        news_dict["title"] = soup.find("h1.entry-title a").text
+        news_dict["timestamp"] = soup.find("li.meta-date").text
+        news_dict["writer"] = soup.find("span.fn a").text
+        news_dict["reading_time"] = int(soup.find("li.cs-icon").text)
+        news_dict["summary"] = soup.select_one("div.entry-content p em").text
+        news_dict["category"] = soup.find("span.label").text
+        return news_dict
+    except ValueError:
+        return {}
 
 
 # Requisito 5
