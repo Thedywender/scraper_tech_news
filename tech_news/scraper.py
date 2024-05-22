@@ -1,5 +1,6 @@
 import requests
 import time
+import re
 from bs4 import BeautifulSoup
 
 
@@ -43,28 +44,33 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    #     {
-    #   "url": "https://blog.betrybe.com/novidades/noticia-bacana",
-    #   "title": "Notícia bacana",
-    #   "timestamp": "04/04/2021",
-    #   "writer": "Eu",
-    #   "reading_time": 4,
-    #   "summary": "Algo muito bacana aconteceu",
-    #   "category": "Ferramentas",
-    # }
-    news_dict = dict()
     try:
         soup = BeautifulSoup(html_content, "html.parser")
+        url = soup.find("link", rel="canonical")["href"]
+        title = soup.find(class_="entry-title").get_text(strip=True)
+        timestamp = soup.find(class_="meta-date").get_text()
+        writer = soup.find(class_="author").find("a").text
+        reading_time_text = soup.find(class_="meta-reading-time").text
+        reading_time = int(re.search(r"\d+", reading_time_text).group())
+        summary = (
+            soup.select_one("div.entry-content p")
+            .text.replace("n/", "")
+            .strip()
+        )
+        category = soup.find(class_="label").text
 
-        news_dict["url"] = soup.find("h2.entry-title").text
-        news_dict["title"] = soup.find("h1.entry-title a").text
-        news_dict["timestamp"] = soup.find("li.meta-date").text
-        news_dict["writer"] = soup.find("span.fn a").text
-        news_dict["reading_time"] = int(soup.find("li.cs-icon").text)
-        news_dict["summary"] = soup.select_one("div.entry-content p em").text
-        news_dict["category"] = soup.find("span.label").text
+        news_dict = {
+            "url": url,
+            "title": title,
+            "timestamp": timestamp,
+            "writer": writer,
+            "reading_time": reading_time,
+            "summary": summary,
+            "category": category,
+        }
         return news_dict
-    except ValueError:
+    except Exception as e:
+        print(f"Exception: {e}")
         return {}
 
 
