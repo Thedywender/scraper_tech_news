@@ -1,4 +1,3 @@
-from unittest.mock import patch
 from tech_news.analyzer.reading_plan import ReadingPlanService
 import pytest
 
