@@ -42,3 +42,10 @@ As notícias foram obtidas através da raspagem no blog da Trybe.
   </ul>
   <p>Com o banco de dados rodando, o MongoDB utilizará por padrão a porta 27017.</p>
 </details>
+<details>
+    <summary>Bônus do projeto!</summary>
+    <p>Há uma interface em linha de comando (CLI) para Usar e trabalhar com os dados do banco de dados assim que estiver rodando e com as dependências instaladas.</p>
+    <p>Basta rodar o comando no terminal</p>
+    <pre><code class="language-bash">tech-news-analizer</code></pre>
+    
+</details>
